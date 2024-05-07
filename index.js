@@ -3,6 +3,9 @@ const app = express();
 const mongoose = require("mongoose");
 const employeeController = require("./src/controller/employeeController");
 const cors = require('cors')
+const port = process.env.PORT || 4000;
+
+
 
 app.use(express.json());
 app.use(cors({
@@ -21,9 +24,12 @@ mongoose
     console.log("connection failed");
   });
 
-app.get("/", (req, res) => {
-  res.send("Welcome to my Node.js backend hosted on Vercel!");
-});
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+})
+
+
+
 
 // Handle preflight requests
 app.options("/api/employeeinfo", cors());
