@@ -16,9 +16,6 @@ mongoose
     console.log("connection failed");
   });
 
-app.listen(4000, () => {
-  console.log("hello there");
-});
 
 app.get("/api/employeeinfo", employeeController.getAllEmployees);
 app.post("/api/employeeinfo", employeeController.createEmployee);
