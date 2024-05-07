@@ -5,7 +5,9 @@ const employeeController = require("./src/controller/employeeController");
 const cors = require('cors')
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: 'http://your-frontend-domain.com',
+}));
 mongoose
   .connect("mongodb+srv://bvabishek:S32Sc2csjaJpcRcU@cluster0.cfnialp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
   .then(() => {
