@@ -7,8 +7,9 @@ const cors = require("cors")
 app.use(express.json());
 app.use(cors({
   origin: 'http://localhost:3000',
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
-
 mongoose
   .connect("mongodb+srv://bvabishek:S32Sc2csjaJpcRcU@cluster0.cfnialp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
   .then(() => {
