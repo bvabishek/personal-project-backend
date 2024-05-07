@@ -29,6 +29,11 @@ mongoose
     console.log("connection failed");
   });
 
+app.get("/", (req, res) => {
+  res.send("Welcome to my Node.js backend hosted on Vercel!");
+});
+
+
 
 app.get("/api/employeeinfo", employeeController.getAllEmployees);
 app.post("/api/employeeinfo", employeeController.createEmployee);
