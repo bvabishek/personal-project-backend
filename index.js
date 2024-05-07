@@ -5,7 +5,8 @@ const employeeController = require("./src/controller/employeeController");
 const cors = require('cors')
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: '*' }));
+
 mongoose
   .connect("mongodb+srv://bvabishek:S32Sc2csjaJpcRcU@cluster0.cfnialp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
   .then(() => {
@@ -19,10 +20,14 @@ app.get("/", (req, res) => {
   res.send("Welcome to my Node.js backend hosted on Vercel!");
 });
 
+// Handle preflight requests
+app.options("/api/employeeinfo", cors());
 
-
+// Routes
 app.get("/api/employeeinfo", employeeController.getAllEmployees);
 app.post("/api/employeeinfo", employeeController.createEmployee);
 app.get("/api/employeeinfo/:employeeId",employeeController.getEmployeebyId);
 app.put("/api/employeeinfo/:employeeId",employeeController.updateEmployee);
 app.delete("/api/employeeinfo/:employeeId", employeeController.deleteEmployee);
+
+module.exports = app;
