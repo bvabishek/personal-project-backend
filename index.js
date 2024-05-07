@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const employeeController = require("./src/controller/employeeController");
+const departmentController = require("./src/controller/departmentController");
 const cors = require('cors')
 const port = process.env.PORT || 4000;
 
@@ -40,5 +41,13 @@ app.post("/api/employeeinfo", employeeController.createEmployee);
 app.get("/api/employeeinfo/:employeeId",employeeController.getEmployeebyId);
 app.put("/api/employeeinfo/:employeeId",employeeController.updateEmployee);
 app.delete("/api/employeeinfo/:employeeId", employeeController.deleteEmployee);
+
+app.get("/api/departmentinfo",departmentController.getAllDepartment);
+app.post("/api/departmentinfo",departmentController.createDepartment);
+app.get("/api/departmentinfo/:deptId",departmentController.getDepartmentbyId);
+app.put("/api/departmentinfo/:deptId",departmentController.updateDepartment);
+app.delete("/api/departmentinfo/:deptId",departmentController.deleteDepartment);
+
+
 
 module.exports = app;
