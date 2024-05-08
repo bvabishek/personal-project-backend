@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const employeeController = require("./src/controller/employeeController");
 const departmentController = require("./src/controller/departmentController");
 const cors = require('cors')
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 5000;
 
 
 

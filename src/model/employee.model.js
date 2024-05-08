@@ -1,10 +1,15 @@
 const mongoose = require("mongoose");
 
+
 const employeeInfoSchema = mongoose.Schema(
   {
     employeeId: {
       type: String,
+      unique: true,
       required: [true, "Employee ID is required"],
+      default: function() {
+        return 'GAR' + (Math.floor(Math.random() * 1000) + 1).toString().padStart(3, '0');
+      }
     },
     firstName: {
       type: String,
@@ -80,6 +85,7 @@ const employeeInfoSchema = mongoose.Schema(
     timestamps: true,
   }
 );
+
 
 const EmployeeInfo = mongoose.model("EmployeeInfo", employeeInfoSchema);
 
