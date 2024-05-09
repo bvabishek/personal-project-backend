@@ -17,7 +17,7 @@ app.use(cors({
 
 
 mongoose
-  .connect("mongodb+srv://bvabishek:S32Sc2csjaJpcRcU@cluster0.cfnialp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+  .connect("mongodb+srv://bvabishek:LT9Ko5NIiG18gssa@cluster0.cfnialp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
   .then(() => {
     console.log("connected");
   })
