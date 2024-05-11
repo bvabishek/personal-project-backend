@@ -3,6 +3,11 @@ const mongoose = require("mongoose");
 
 const employeeInfoSchema = mongoose.Schema(
   {
+    userid: {
+      type: String,
+      unique: true,
+      required: [true, "User id is required"]
+    },
     employeeId: {
       type: String,
       unique: true,
@@ -79,7 +84,12 @@ const employeeInfoSchema = mongoose.Schema(
     officialMail: {
       type: String,
       required: [true, "Official mail is required"],
-    }
+    },
+    password: {
+      type: String,
+      required: [true, 'Password is required'],
+      minlength: [8, 'Password must be at least 8 characters'],
+    },
   },
   {
     timestamps: true,
