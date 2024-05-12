@@ -24,10 +24,10 @@ exports.getEmployeebyId = async (req, res) => {
   }
 };
 
-exports.getEmployeebyuid = async (req, res) => {
+exports.getEmployeebyemail = async (req, res) => {
   try {
-    const { userid } = req.params;
-    const employee = await Employee.findOne({ userid: userid });
+    const { email } = req.params;
+    const employee = await Employee.findOne({ email: email });
 
     if (!employee) {
       return res.status(404).json({ message: "Employee not found" });

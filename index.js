@@ -42,7 +42,7 @@ app.post("/api/employeeinfo", employeeController.createEmployee);
 app.get("/api/employeeinfo/:employeeId",employeeController.getEmployeebyId);
 app.put("/api/employeeinfo/:employeeId",employeeController.updateEmployee);
 app.delete("/api/employeeinfo/:employeeId", employeeController.deleteEmployee);
-app.get("/api/employeeinfo/uid/:userid",employeeController.getEmployeebyuid);
+app.get("/api/employeeinfo/email/:email",employeeController.getEmployeebyemail);
 
 app.get("/api/departmentinfo",departmentController.getAllDepartment);
 app.post("/api/departmentinfo",departmentController.createDepartment);

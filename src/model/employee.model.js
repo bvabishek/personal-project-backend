@@ -3,11 +3,6 @@ const mongoose = require("mongoose");
 
 const employeeInfoSchema = mongoose.Schema(
   {
-    userid: {
-      type: String,
-      unique: true,
-      required: [true, "User id is required"]
-    },
     employeeId: {
       type: String,
       unique: true,
