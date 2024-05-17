@@ -1,4 +1,6 @@
 const Employee = require("../model/employee.model");
+const admin = require('../firebase/firebaseadmin');
+
 
 exports.getAllEmployees = async (req, res) => {
   try {
@@ -68,17 +70,47 @@ exports.updateEmployee = async (req, res) => {
 };
 
 exports.deleteEmployee = async (req, res) => {
-    try {
-      const { employeeId } = req.params;
-      const employee = await Employee.findOneAndDelete({ employeeId: employeeId });
-  
-      if (!employee) {
-        return res.status(404).json({ message: "Employee not found" });
-      }
-  
-      res.status(200).json({ message: "Employee deleted successfully" });
-    } catch (error) {
-      res.status(500).json({ message: error.message });
+  try {
+    const { uid } = req.params;
+    
+    await admin.auth().deleteUser(uid);
+    const employee = await Employee.findOneAndDelete({ uid: uid });
+
+    if (!employee) {
+      return res.status(404).json({ message: "User not found" });
     }
-  };
+
+    res.status(200).json({ message: "Employee deleted successfully" });
+  } catch (error) {
+    if (error.code && error.code.startsWith('auth/')) {
+      return res.status(500).json({ message: `Firebase error: ${error.message}` });
+    }
+    
+    res.status(500).json({ message: error.message });
+  }
+};
+
+  // exports.updatePassword = async (req, res) => {
+  //   try {
+  //     const { email } = req.params;
+  //     const { newPassword } = req.body;
+  //     console.log(req.body);
+  //     const employee = await Employee.findOneAndUpdate(
+  //       { email: email },
+  //       { password: newPassword },
+  //       { new: true }
+  //     );
+
+  //     console.log("Updated Employee:", employee);
+  
+  //     if (!employee) {
+  //       return res.status(404).json({ message: "Employee not found" });
+  //     }
+  
+  //     res.status(200).json(employee);
+  //   } catch (error) {
+  //     res.status(500).json({ message: error.message });
+  //   }
+  // };
+  
   

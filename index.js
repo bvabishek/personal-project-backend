@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const employeeController = require("./src/controller/employeeController");
 const departmentController = require("./src/controller/departmentController");
 const mailerController = require("./src/controller/mailerController");
+const userController = require("./src/controller/userconfigController");
 const cors = require('cors')
 const port = process.env.PORT || 5000;
 
@@ -41,7 +42,7 @@ app.get("/api/employeeinfo", employeeController.getAllEmployees);
 app.post("/api/employeeinfo", employeeController.createEmployee);
 app.get("/api/employeeinfo/:employeeId",employeeController.getEmployeebyId);
 app.put("/api/employeeinfo/:employeeId",employeeController.updateEmployee);
-app.delete("/api/employeeinfo/:employeeId", employeeController.deleteEmployee);
+app.delete("/api/employeeinfo/:uid", employeeController.deleteEmployee);
 app.get("/api/employeeinfo/email/:email",employeeController.getEmployeebyemail);
 
 app.get("/api/departmentinfo",departmentController.getAllDepartment);
@@ -49,6 +50,12 @@ app.post("/api/departmentinfo",departmentController.createDepartment);
 app.get("/api/departmentinfo/:deptId",departmentController.getDepartmentbyId);
 app.put("/api/departmentinfo/:deptId",departmentController.updateDepartment);
 app.delete("/api/departmentinfo/:deptId",departmentController.deleteDepartment);
+
+app.post("/api/users",userController.createUsers);
+app.get("/api/users",userController.getAllUsers);
+app.post("/api/users/disable/:uid",userController.disableUser);
+app.post("/api/users/enable/:uid",userController.enableUser);
+app.delete("/api/users/:uid",userController.deleteUser)
 
 app.post("/api/sendmail",mailerController.postmailer);
 

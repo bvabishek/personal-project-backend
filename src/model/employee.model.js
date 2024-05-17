@@ -1,8 +1,14 @@
 const mongoose = require("mongoose");
+const Counter = require("./counter.model");
 
 
 const employeeInfoSchema = mongoose.Schema(
   {
+    uid: {
+      type: String,
+      unique: true,
+      required: [true, "User ID is required"]
+    },
     employeeId: {
       type: String,
       unique: true,
@@ -80,16 +86,24 @@ const employeeInfoSchema = mongoose.Schema(
       type: String,
       required: [true, "Official mail is required"],
     },
-    password: {
-      type: String,
-      required: [true, 'Password is required'],
-      minlength: [8, 'Password must be at least 8 characters'],
-    },
   },
   {
     timestamps: true,
   }
 );
+
+employeeInfoSchema.pre('save', async function(next) {
+  let doc = this;
+  if (doc.isNew) {
+    const counter = await Counter.findByIdAndUpdate(
+      { _id: 'employeeId' },
+      { $inc: { seq: 1 } },
+      { new: true, upsert: true }
+    );
+    doc.employeeId = 'GAR' + counter.seq.toString().padStart(3, '0');
+  }
+  next();
+});
 
 
 const EmployeeInfo = mongoose.model("EmployeeInfo", employeeInfoSchema);
