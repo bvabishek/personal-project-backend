@@ -73,7 +73,6 @@ exports.deleteEmployee = async (req, res) => {
   try {
     const { uid } = req.params;
     
-    await admin.auth().deleteUser(uid);
     const employee = await Employee.findOneAndDelete({ uid: uid });
 
     if (!employee) {
@@ -82,9 +81,6 @@ exports.deleteEmployee = async (req, res) => {
 
     res.status(200).json({ message: "Employee deleted successfully" });
   } catch (error) {
-    if (error.code && error.code.startsWith('auth/')) {
-      return res.status(500).json({ message: `Firebase error: ${error.message}` });
-    }
     
     res.status(500).json({ message: error.message });
   }
