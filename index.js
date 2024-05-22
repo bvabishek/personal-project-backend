@@ -1,10 +1,13 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+//controller imports
 const employeeController = require("./src/controller/employeeController");
 const departmentController = require("./src/controller/departmentController");
 const mailerController = require("./src/controller/mailerController");
 const userController = require("./src/controller/userconfigController");
+const vendorController = require("./src/controller/vendorController");
+
 const cors = require('cors')
 const port = process.env.PORT || 5000;
 
@@ -55,7 +58,13 @@ app.post("/api/users",userController.createUsers);
 app.get("/api/users",userController.getAllUsers);
 app.post("/api/users/disable/:uid",userController.disableUser);
 app.post("/api/users/enable/:uid",userController.enableUser);
-app.delete("/api/users/:uid",userController.deleteUser)
+app.delete("/api/users/:uid",userController.deleteUser);
+
+app.post("/api/vendor",vendorController.createVendor);
+app.get("/api/vendor",vendorController.getAllVendors);
+app.get("/api/vendor/:vendorMasterId",vendorController.getVendorbyId);
+app.put("/api/vendor/vendorupdate/:vendorMasterId",vendorController.updateVendor);
+app.delete("/api/vendor/vendordelete/:vendorMasterId", vendorController.deleteVendor);
 
 app.post("/api/sendmail",mailerController.postmailer);
 
