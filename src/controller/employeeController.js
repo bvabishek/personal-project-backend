@@ -26,6 +26,23 @@ exports.getEmployeebyId = async (req, res) => {
   }
 };
 
+exports.getEmployeebyDepartment = async (req, res) => {
+  try {
+    const { department } = req.params;
+    const decodedDepartment = decodeURIComponent(department);
+    const employees = await Employee.find({ department: decodedDepartment });
+
+    if (employees.length === 0) {
+      return res.status(404).json({ message: "No employees found in this department" });
+    }
+
+    res.status(200).json(employees);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
 exports.getEmployeebyemail = async (req, res) => {
   try {
     const { email } = req.params;
