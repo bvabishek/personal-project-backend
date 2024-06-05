@@ -94,47 +94,55 @@ exports.deleteTask = async (req, res) => {
   };
 
   exports.updateTaskHours = async (req, res) => {
-    try {
-      const { taskId } = req.params;
-      const { totalHours } = req.body;
-  
-      if (!totalHours) {
-        return res.status(400).json({ message: "hours is required" });
-      }
-  
-      // Find the current task
-      const task = await Tasks.findOne({ taskId: taskId });
-  
-      if (!task) {
-        return res.status(404).json({ message: "Task not found" });
-      }
-  
-      // Convert the current total hours to seconds
-      const [currentHours, currentMinutes, currentSeconds] = task.totalHours.split(":").map(Number);
-      const currentDurationInSeconds = currentHours * 3600 + currentMinutes * 60 + currentSeconds;
-  
-      // Convert the new total hours to seconds
-      const [newHours, newMinutes, newSeconds] = totalHours.split(":").map(Number);
-      const newDurationInSeconds = newHours * 3600 + newMinutes * 60 + newSeconds;
-  
-      // Sum the durations
-      const totalDurationInSeconds = currentDurationInSeconds + newDurationInSeconds;
-  
+  try {
+    const { taskId } = req.params;
+    const { totalHours } = req.body;
 
-      const hours = String(Math.floor(totalDurationInSeconds / 3600)).padStart(2, "0");
-      const minutes = String(Math.floor((totalDurationInSeconds % 3600) / 60)).padStart(2, "0");
-      const seconds = String(totalDurationInSeconds % 60).padStart(2, "0");
-      const totalHoursSum = `${hours}:${minutes}:${seconds}`;
-  
-
-      task.totalHours = totalHoursSum;
-      await task.save();
-  
-      res.status(200).json({ message: "Total hours updated successfully", task });
-    } catch (error) {
-      res.status(500).json({ message: error.message });
+    if (!totalHours) {
+      return res.status(400).json({ message: "Total hours are required" });
     }
-  };
+
+    // Find the current task
+    const task = await Tasks.findOne({ taskId });
+
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+
+    // Function to convert HH:MM:SS format to total seconds
+    const convertToSeconds = (time) => {
+      const [hours, minutes, seconds] = time.split(":").map(Number);
+      return (hours * 3600) + (minutes * 60) + seconds;
+    };
+
+    // Function to convert total seconds to HH:MM:SS format
+    const convertToHHMMSS = (seconds) => {
+      const hrs = String(Math.floor(seconds / 3600)).padStart(2, "0");
+      const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
+      const secs = String(seconds % 60).padStart(2, "0");
+      return `${hrs}:${mins}:${secs}`;
+    };
+
+    // Convert current and new total hours to seconds
+    const currentDurationInSeconds = convertToSeconds(task.totalHours);
+    const newDurationInSeconds = convertToSeconds(totalHours);
+
+    // Sum the durations in seconds
+    const totalDurationInSeconds = currentDurationInSeconds + newDurationInSeconds;
+
+    // Convert total duration back to HH:MM:SS format
+    const totalHoursSum = convertToHHMMSS(totalDurationInSeconds);
+
+    // Update task's total hours
+    task.totalHours = totalHoursSum;
+    await task.save();
+
+    res.status(200).json({ message: "Total hours updated successfully", task });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
   
   
   
