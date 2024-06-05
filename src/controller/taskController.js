@@ -98,8 +98,11 @@ exports.deleteTask = async (req, res) => {
       const { taskId } = req.params;
       const { totalHours } = req.body;
   
+      // Log the request body for debugging
+      console.log("Request Body:", req.body);
+  
       if (!totalHours) {
-        return res.status(400).json({ message: "hours is required" });
+        return res.status(400).json({ message: "totalHours is required" });
       }
   
       // Find the current task
@@ -120,13 +123,13 @@ exports.deleteTask = async (req, res) => {
       // Sum the durations
       const totalDurationInSeconds = currentDurationInSeconds + newDurationInSeconds;
   
-
+      // Convert the total duration back to HH:MM:SS format
       const hours = String(Math.floor(totalDurationInSeconds / 3600)).padStart(2, "0");
       const minutes = String(Math.floor((totalDurationInSeconds % 3600) / 60)).padStart(2, "0");
       const seconds = String(totalDurationInSeconds % 60).padStart(2, "0");
       const totalHoursSum = `${hours}:${minutes}:${seconds}`;
   
-
+      // Update the task with the new total hours
       task.totalHours = totalHoursSum;
       await task.save();
   
