@@ -93,7 +93,7 @@ exports.deleteTask = async (req, res) => {
     }
   };
 
- exports.updateTaskHours = async (req, res) => {
+exports.updateTaskHours = async (req, res) => {
   try {
     const { taskId } = req.params;
     const { totalHours } = req.body;
@@ -109,22 +109,36 @@ exports.deleteTask = async (req, res) => {
       return res.status(404).json({ message: "Task not found" });
     }
 
-    // Convert the current total hours to seconds
-    const [currentHours, currentMinutes, currentSeconds] = task.totalHours.split(":").map(Number);
-    const currentDurationInSeconds = currentHours * 3600 + currentMinutes * 60 + currentSeconds;
+    // Function to convert HH:MM:SS format to total seconds
+    const convertToSeconds = (time) => {
+      const [hours, minutes, seconds] = time.split(":").map(Number);
+      return (hours * 3600) + (minutes * 60) + seconds;
+    };
 
-    // Convert the new total hours to seconds
-    const [newHours, newMinutes, newSeconds] = totalHours.split(":").map(Number);
-    const newDurationInSeconds = newHours * 3600 + newMinutes * 60 + newSeconds;
+    // Function to convert total seconds to HH:MM:SS format
+    const convertToHHMMSS = (seconds) => {
+      const hrs = String(Math.floor(seconds / 3600)).padStart(2, "0");
+      const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
+      const secs = String(seconds % 60).padStart(2, "0");
+      return `${hrs}:${mins}:${secs}`;
+    };
 
-    // Sum the durations
+    // Convert current and new total hours to seconds
+    const currentDurationInSeconds = convertToSeconds(task.totalHours);
+    const newDurationInSeconds = convertToSeconds(totalHours);
+
+    console.log('Current total hours in seconds:', currentDurationInSeconds);
+    console.log('New total hours in seconds:', newDurationInSeconds);
+
+    // Sum the durations in seconds
     const totalDurationInSeconds = currentDurationInSeconds + newDurationInSeconds;
 
+    console.log('Total duration in seconds:', totalDurationInSeconds);
+
     // Convert total duration back to HH:MM:SS format
-    const hours = String(Math.floor(totalDurationInSeconds / 3600)).padStart(2, "0");
-    const minutes = String(Math.floor((totalDurationInSeconds % 3600) / 60)).padStart(2, "0");
-    const seconds = String(totalDurationInSeconds % 60).padStart(2, "0");
-    const totalHoursSum = `${hours}:${minutes}:${seconds}`;
+    const totalHoursSum = convertToHHMMSS(totalDurationInSeconds);
+
+    console.log('Total hours sum in HH:MM:SS:', totalHoursSum);
 
     // Update task's total hours
     task.totalHours = totalHoursSum;
@@ -135,6 +149,7 @@ exports.deleteTask = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 
   
