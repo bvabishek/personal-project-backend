@@ -66,7 +66,7 @@ app.delete("/api/users/:uid",userController.deleteUser);
 app.post("/api/vendor",vendorController.createVendor);
 app.get("/api/vendor",vendorController.getAllVendors);
 app.get("/api/vendor/:vendorMasterId",vendorController.getVendorbyId);
-app.put("/api/vendor/vendorupdate/:vendorMasterId",vendorController.updateVendor);
+app.patch("/api/vendor/vendorupdate/:vendorMasterId",vendorController.updateVendor);
 app.delete("/api/vendor/vendordelete/:vendorMasterId", vendorController.deleteVendor);
 
 app.post("/api/project",projectController.createProject);
